@@ -55,7 +55,7 @@ BUILDDIR =./build
 
 .PHONY: all clean
 
-all : builddir uart.elf
+all : clean builddir uart.elf
 
 builddir : | $(BUILDDIR)
 
@@ -70,6 +70,7 @@ clean :
 uart.elf : src/raspberrypi4.ld $(OBJS)
 	$(CROSS)gcc -Wl,--build-id=none -std=gnu99 -T src/raspberrypi4.ld -o $@ -ffreestanding -nostdlib --specs=nosys.specs $(BUILTIN_OPS) $(OBJS)
 	$(CROSS)objdump -d uart.elf > uart.list
+	$(CROSS)objcopy -O binary uart.elf kernel8.img
 
 build/%.o : src/%.S
 	$(CROSS)as $(ASMFLAGS) -c -o $@ $<
