@@ -46,5 +46,7 @@ SECTIONS
     {
         *(.pt)
     }
+    . = ALIGN(4096); /* align to page size */
+    __DDR_start = .; /* DDR for caching memory */
 }
 __bss_size = (__bss_end - __bss_start)>>3;

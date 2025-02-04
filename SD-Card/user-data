@@ -1,0 +1,16 @@
+#cloud-config
+users:
+- name: ubuntu
+  groups: users,adm,dialout,audio,netdev,video,plugdev,cdrom,games,input,gpio,spi,i2c,render,sudo
+  shell: /bin/bash
+  lock_passwd: false
+  passwd: $5$0uh2faVwit$tlTSTeqNc/SRxhoXZUO37hNrEW9JIC7v84kPwjBOfCB
+
+ssh_pwauth: true
+
+timezone: Europe/Berlin
+runcmd:
+- localectl set-x11-keymap "de" pc105
+- setupcon -k --force || true
+
+

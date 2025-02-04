@@ -1,0 +1,25 @@
+{
+    "files.associations": {
+        "interrupt.h": "c",
+        "board.h": "c",
+        "freertos_ip.h": "c",
+        "freertos_tcp_server.h": "c",
+        "mini_uart.h": "c",
+        "bcm_types.h": "c",
+        "freertos.h": "c",
+        "bcm_string.h": "c",
+        "semphr.h": "c",
+        "freertos_sockets.h": "c",
+        "cstring": "c",
+        "xmemory": "c",
+        "string_local.h": "c",
+        "freertos_udp_ip.h": "c",
+        "stdio.h": "c",
+        "gpio.h": "c",
+        "bstatus.h": "c",
+        "encspi.h": "c",
+        "spi0.h": "c",
+        "enc28j60.h": "c",
+        "printf.h": "c"
+    }
+}

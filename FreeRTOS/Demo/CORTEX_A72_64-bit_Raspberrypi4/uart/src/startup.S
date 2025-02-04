@@ -8,7 +8,7 @@ _boot:
     // The other cores will return.
     mrs     x1, mpidr_el1
     and     x1, x1, #3
-    cmp     x1, #3
+    cmp     x1, #0
     bne     kick_core3
 
 start_el2:
@@ -56,4 +56,10 @@ kick_core3:
     sev
     wfe
     mov     x0, #0x0
+    ret
+
+.globl get_el
+get_el:
+    mrs x0, CurrentEL
+    lsr x0, x0, #2
     ret

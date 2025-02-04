@@ -84,8 +84,8 @@ void vApplicationIRQHandler( uint32_t ulICCIAR )
     with 0x3FF. */
     ulInterruptID = ulICCIAR & (0x3FFU);
 
-    /* EOI notification */
-    if (ulInterruptID < 0x10) {
+    /* prepare EOI notification */
+    if (ulInterruptID < 0x10) { // its a Software-Generated-Interrupt (SGI)
         val = ((0x3U << 10) | ulInterruptID);
 #if 0
     } else if (ulInterruptID == 0x3ff) {

@@ -29,7 +29,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <machine/endian.h>
-
+#if 0
 void *memcpy(void *restrict dest, const void *restrict src, size_t n)
 {
     unsigned char *d = dest;
@@ -150,3 +150,4 @@ void *memcpy(void *restrict dest, const void *restrict src, size_t n)
     for (; n; n--) *d++ = *s++;
     return dest;
 }
+#endif

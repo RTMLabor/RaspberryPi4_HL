@@ -1,0 +1,36 @@
+1
+Uart-Connection:
+Putty COM9
+Power up Rpi4, boot into u-boot, stop autoboot
+
+#load elf file with:
+fatload mmc 0:1 0x20000000 NetCore_debug_bootentry.elf
+# run programm with
+bootelf 0x20000000
+
+#maybe errors/interrupts will apear
+
+
+
+2
+(dependency: put openocd in PATH-Variable)
+hook up with openocd via cmd:
+cd C:\Users\ehlingn\SAFE_Ehling\Projekte\RPi\CBS-System\Toolboxes\iXnitionTargetRPi4\RaspberryPi4\DebugProcess\OpenOCD_Debugging\OpenOCD-20240820-0.12.0\bin
+
+openocd -f interface\ft232h.cfg -f target\Ri4b.cfg
+
+
+3
+#connect via openocd via cmd:
+telnet 127.0.0.1 4444
+#(from here you can inspect memory of elf file loaded into RPi4)
+# inspect memory regions of occured errors/interrupts with
+mdw 0x20000000
+
+4
+(dependency: put msys2.exe in PATH-Variable)
+#check code/variable/function at specific memory in elf file with msys64:
+cd /c/Users/ehlingn/SAFE_Ehling/Projekte/RPi/CBS-System/Toolboxes/iXnitionTargetRPi4/RaspberryPi4/SetupFiles/Core0/debug
+# eg 0x20000000
+export PATH=/c/camel-dev/D71/arm-rpi4-gcc-aarch64/bin:$PATH
+aarch64-elf-objdump -d NetCore.elf | grep -A 20 "0x20000000"

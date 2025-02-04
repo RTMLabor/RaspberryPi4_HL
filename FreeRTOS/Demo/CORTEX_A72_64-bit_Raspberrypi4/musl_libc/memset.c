@@ -28,7 +28,7 @@
 
 #include <string.h>
 #include <stdint.h>
-
+#if 0
 void *memset(void *dest, int c, size_t n)
 {
     unsigned char *s = dest;
@@ -116,3 +116,4 @@ void *memset(void *dest, int c, size_t n)
 
     return dest;
 }
+#endif

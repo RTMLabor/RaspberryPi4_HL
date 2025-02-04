@@ -31,6 +31,16 @@ struct UARTCTL {
 };
 struct UARTCTL *uartctl;
 
+void putc(void *p, char c) {
+    /* Avoid compiler warning about unreferenced parameter. */
+		( void ) *p;
+    if (c == '\n') {
+        uart_putchar('\r');
+    }
+
+    uart_putchar(c);
+}
+
 void uart_putchar(uint8_t c)
 {
     xSemaphoreTake(uartctl->tx_mux, (portTickType) portMAX_DELAY);

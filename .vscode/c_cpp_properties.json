@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Aarch64-RPi4",
+            "compilerPath": "C:\\camel-dev\\D71\\arm-rpi4-gcc-aarch64\\bin\\aarch64-elf-gcc.exe",
+            "intelliSenseMode": "gcc-arm64",
+            "cppStandard": "c++17",
+            "cStandard": "c11",
+            "includePath": [
+                "${default}",
+                "${workspaceFolder}/FreeRTOS/Demo/CORTEX_A72_64-bit_Raspberrypi4/driver/**",
+                "${workspaceFolder}/FreeRTOS/Demo/CORTEX_A72_64-bit_Raspberrypi4/uart/src",
+                "${workspaceFolder}/FreeRTOS/Source/include",
+                "${workspaceFolder}/FreeRTOS/Source/portable/GCC/ARM_CA72_64_BIT",
+                "${workspaceFolder}/FreeRTOS-Plus/Source/FreeRTOS-Plus-FAT/portable/common",
+                "${workspaceFolder}/FreeRTOS-Plus/Source/FreeRTOS-Plus-FAT/include",
+                "${workspaceFolder}/FreeRTOS-Plus/Source/FreeRTOS-Plus-TCP/protocols/include",
+                "${workspaceFolder}/FreeRTOS-Plus/Source/FreeRTOS-Plus-UDP/portable/Compiler/GCC",
+                "${workspaceFolder}/FreeRTOS-Plus/Source/FreeRTOS-Plus-TCP/include",
+                "${workspaceFolder}/FreeRTOS-Plus/Source/FreeRTOS-Plus-TCP/protocols/include",
+                "${workspaceFolder}/Ipanema/include/syslayer"
+            ]
+        }
+    ],
+    "version": 4
+}
