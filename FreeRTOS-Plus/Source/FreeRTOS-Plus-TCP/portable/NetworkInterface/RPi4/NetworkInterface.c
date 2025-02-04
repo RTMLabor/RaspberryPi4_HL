@@ -181,7 +181,7 @@ const TickType_t xWaitLinkDelay = pdMS_TO_TICKS( 7000UL ), xWaitRelinkDelay = pd
 
 BaseType_t xNetworkInterfaceInput()
 {
-	while (!ENC_GetReceivedFrame(&networkhandle));
+	while (!ENC_GetReceivedFrame(encspi_getHandle()));
 	return 1;
 }
 /*-----------------------------------------------------------*/
