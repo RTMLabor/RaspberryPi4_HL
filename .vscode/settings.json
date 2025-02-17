@@ -20,6 +20,13 @@
         "encspi.h": "c",
         "spi0.h": "c",
         "enc28j60.h": "c",
-        "printf.h": "c"
+        "printf.h": "c",
+        "array": "c",
+        "*.tcc": "c",
+        "memory": "c",
+        "istream": "c",
+        "functional": "c",
+        "tuple": "c",
+        "utility": "c"
     }
 }
