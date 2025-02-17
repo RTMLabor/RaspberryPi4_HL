@@ -21,9 +21,22 @@ Or if you already have a formatted sd-card, copy the folder .\SD-Card onto your 
 
 ### Linux installation
 
-Install 64-bit Ubuntu or Debian on your Raspberry Pi 4B.
+Install 64-bit RaspOS on your Raspberry Pi 4B from SVN (D71ADevRaspi\RaspOS_Image) with RPi Imager:
+start Imager
+
+select OS -> use custom -> path to D71ADevRaspi\RaspOS_Image -> select "2024-11-19-raspios-bookworm-arm64-lite.img"
+
+select SD-Card -> (sd-card which you plugged in)
+
+Alternatively you can use one of the downloadlinks:
 https://ubuntu.com/download/raspberry-pi
 https://wiki.debian.org/RaspberryPi4
+
+### GPIO-Configuration
+To use external chips (Ethernet, Uart-Interface, ...) you have to connect the following pins:
+
+![GPIO-Pin](imgs/GPIO_config.jpg)
+
 
 ### UART configuration
 
