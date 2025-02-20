@@ -17,6 +17,16 @@ The sample application runs on the CPU core #3 on your Raspberry Pi 4B board. A 
 
 ARMv8-A MMU is available with VA = PA configuration. The current implementation employs 2-level address translation (1GB-page for the 1st level, 2MB-page for the 2nd level). See `FreeRTOS/Demo/CORTEX_A72_64-bit_Raspberrypi4/uart/src/mmu.c` for the detail.
 
+For Users without the intention of developing just do the following steps:
+Step 2 (Linux installation, GPIO-configuration, UART software-configuration {leave Cross-Compiler installation and u-boot compilation})
+
+Then mark everything on the sd-card and delete it. Afterwards copy all the content of the folder SD-Card onto the sd-card.
+
+Continue with step 4
+
+For developers who want to participate or compile everything just follow the whole guide, and have fun :)
+
+
 [1] https://github.com/eggman/FreeRTOS-raspi3
 
 ## 2. Prerequisites
@@ -112,7 +122,8 @@ UART2(PL011) for FreeRTOS is  automatically configured to use the GPIO ALT4 sett
 
 ### Cross-Compiler installation
 
-If you come along form svn-repository, you already installed the necessary compiler.
+If you come along form svn-repository, you already installed the necessary compiler and skip this step.
+
 Otherwise you need to install a GCC toolset for aarch64, and can get it from [3]. I used AArch64 ELF bare-metal target (aarch64-none-elf) version 9.2.1 for this repository.
 
 [3] https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads
@@ -135,7 +146,9 @@ You also need to install msys64 [4] directly under `C:\` so its available at: `C
 ### u-boot compilation
 
 A pre-built u-boot image provided by Ubuntu or Debian may not have the `dcache` command on the u-boot prompt. You need to compile and install u-boot having cache management commands if u-boot provided by your Linux distribution does not have them.
-I you com e from svn-repo, skip step 1. Otherwise:
+
+#### Linux-development-machine
+
 (1) Source code download  
 `$ git clone https://github.com/u-boot/u-boot`  
 
@@ -155,6 +168,35 @@ $ sudo cp .\u-boot.bin \path\to\sd_boot_partition\kernel8.img
 ```
 (The new file name must be `kernel8.img`)
 
+
+#### Windows-development-machine
+
+(1) Source code is in repo D71ADevRaspi\u-boot  
+start msys2
+
+```
+cd /c/camel-dev/D71ADevRaspi
+export PATH=$PATH:/c/camel-dev/D71ADevRaspi/gcc-arm-10.3-2021.07-mingw-w64-i686-aarch64-none-elf/bin
+```
+
+(2) Compilation
+```
+$ cd u-boot
+$ export CROSS_COMPILE=aarch64-none-elf-
+$ echo 'CONFIG_CMD_CACHE=y' >> ./configs/rpi_4_defconfig
+$ make rpi_4_defconfig
+$ make -j12 (if your PC has 12 processor cores)
+```
+(`CROSS_COMPILE` must be changed depending on a compiler you installed)
+
+(3) Copy the binary to your SD card  
+```
+$ sudo cp .\u-boot.bin \path\to\sd_boot_partition\kernel8.img
+```
+(The new file name must be `kernel8.img`)
+
+You can close msys2 for now.
+
 ## 3. FreeRTOS-UART sample build
 
 #### Linux-development-machine
@@ -168,11 +210,11 @@ $ make CROSS=aarch64-none-elf-
 #### Windows-development-machine
 Also very simple, just run the following batchfile:
 ```
-cd Demo\CORTEX_A72_64-bit_Raspberrypi4
+cd .\FreeRTOS\Demo\CORTEX_A72_64-bit_Raspberrypi4
 .\makeDemo.bat
 ```
 
-### MMU-settings ()
+### MMU-settings (if you want to change it)
 
 MMU is enabled by default. You can easily disable it by removing or commenting out the configure_mmu() call.
 ```
@@ -209,7 +251,7 @@ static struct ptc_t pt_config[NUM_PT_CONFIGS] =
 
 change, if you like and make again
 
-### ENC28J60-settings
+### ENC28J60-settings (if you want to change it)
 The sample includes a ENC28J60-sample sending an arp-request to network.
 The network-settings of this Demo are:
 
@@ -233,21 +275,61 @@ change accordingly and make again
 
 ## 4. Launching FreeRTOS by u-boot
 
-#### Linux
+#### Linux-development-machine
 (1) Copy the obtained binary to your SD card
 ```
 $ sudo ./uart.elf /path/to/sd_boot_partition/
 ```
-#### Windows
-(1) Copy the obtained binary to your SD card
+#### Windows-development-machine
+
+You can use the DebugSetup.bat in the `.\FreeRTOS\Demo\CORTEX_A72_64-bit_Raspberrypi4\uart`-folder:
+
+Install putty (if you come from svn-repo you already got this) and save 2 configs (guessing you have 2 Uart-adapters e.g. two of this one [4]):
+
+Open putty and adjust settings to save:
+
+1. (GPIO14 and GPIO15)
 ```
-.\copy_uart_elf_to_sd_card.bat
+ connections type:          serial
+	  serial line:			COM5 (adjust 5 to your Port in use for e.g. debug probe)
+			Speed:          115200
+		data bits:      	8
+		stop bits:      	1
+		   parity:          none
+	 flow control:   		none
+
+session name: RPi4_Ubuntu
 ```
+2. (GPIO0 and GPIO1)
+```
+connection type:          serial
+	serial line:		  COM5 (adjust 5 to your Port in use for e.g. debug probe)
+		  Speed:          115200
+	  data bits:      	  8
+	  stop bits:      	  1
+		 parity:          none
+   flow control:   	      none
+
+session name: RPi4_FreeRTOS
+```
+Select the COM-ports of your setups.
+
+
+[4] https://www.raspberrypi.com/products/debug-probe/
+
+
+
+(1) Copy the obtained binary to your SD card via terminal
+```
+copy .\FreeRTOS\Demo\CORTEX_A72_64-bit_Raspberrypi4\uart\uart.elf D:\
+```
+
+or GUI.
 
 (2) Get the u-boot command on your Raspberry Pi 4B board  
 Insert your SD card into your board, then power it on. Wait for auto-boot timer and interrupt with a key of your choice.
 
-(3) Launch the FreeRTOS sample program on the u-boot prompt
+(3) Launch the FreeRTOS sample program on the u-boot prompt (uart-ubuntu putty-terminal)
 ```
 fatload mmc 0:1 0x28000000 uart.elf
 bootelf 0x28000000
@@ -370,12 +452,21 @@ on the u-boot prompt. You will see Linux boot process output on UART1(mini UART)
 
 ### On your Raspberry Pi 4B board
 
-(1) Boot Linux, then add `enable_jtag_gpio=1` to `config.txt`.
+(1) Add 
+
+```
+# Disable pull downs
+gpio=22-27=np
+# Enable jtag pins (i.e. GPIO22-GPIO27)
+enable_jtag_gpio=1
+```
+
+to `config.txt` on the sd-card.
 
 (2) Reboot your Raspberry Pi 4B board.
 
 ### On your PC for remote debugging
-
+<!--
 #### Linux-development-machine
 
 (1) Compile and install the latest OpenOCD (http://openocd.org/repos/).
@@ -415,38 +506,13 @@ target remote localhost:3336
 (`aarch64-none-elf-` must be changed depending on a compiler you installed)
 
 You are now ready to start debugging FreeRTOS running on Cortex-A72 core#3. You can add the source code path on the gdb console.
-
+-->
 #### Windows-development-machine
 
-You can use the DebugSetup.bat in the uart-folder: Install putty and save 2 configs (guessing you have 2 Uart-adapters e.g. two of this one [4]):
+Debug is limited to uart-output (i like to debug via gdb, but currently there is a problem with using u-boot and gdb-debugging at the same time), 
 
-1. (GPIO14 and GPIO15)
-```
-Type:           serial
-Speed:          115200
-data bits:      8
-stop bits:      1
-parity:         none
-flow control:   none
+So to debug the program, insert `FreeRTOS_debug_printf( ( "<debug_message>" ) )` into the Code.
 
-session name: RPi4_Ubuntu
-```
-2. (GPIO0 and GPIO1)
-```
-Type:           serial
-Speed:          115200
-data bits:      8
-stop bits:      1
-parity:         none
-flow control:   none
-
-session name: RPi4_FreeRTOS
-```
-Select the COM-ports of your setups.
-
-
-
-[4] https://www.raspberrypi.com/products/debug-probe/
 
 ## 7. License
 
