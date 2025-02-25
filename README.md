@@ -83,12 +83,12 @@ JTAG (Adafruit FT232H):
 
 | FT232H | Signal | Pin | GPIO|
 |--------|--------|-----|-----|
-|   D6   |   TMS  |  13 | 27  |
+|   D3   |   TMS  |  13 | 27  |
 |   D4   |   TRST |  15 | 22  |
 |   D7   |   RTCK |  16 | 23  |
-|  MISO  |   TDO  |  18 | 24  |
-|  SCK   |   TCK  |  22 | 25  |
-|  MOSI  |   TDI  |  37 | 26  |
+|   D2   |   TDO  |  18 | 24  |
+|   D0   |   TCK  |  22 | 25  |
+|   D1   |   TDI  |  37 | 26  |
 |  GND   |   GND  |  39 |     |
 
 ENC28J60:
